@@ -12,3 +12,4 @@
 ## Application structure
 - Keep the product showcase on the index route with browser-safe product data and a shared detail dialog; this keeps exploration fast without requiring a backend.
 - Define the showcase palette and presentation styles in src/styles.css and use the shared Button component for actions; this keeps the visual system consistent.
+- Pre-optimize the showcase's React-dependent UI packages in Vite alongside the template's React entries; this prevents late dependency discovery from replacing the React module graph in an open preview.
