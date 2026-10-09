@@ -62,7 +62,7 @@ function Index() {
           <div className="hero-actions"><Button asChild size="lg"><a href="#produtos">Conheça os produtos <ArrowUpRight /></a></Button><Button variant="ghost" className="hero-secondary" onClick={() => setAboutOpen(true)}>Nossa visão <ArrowRight /></Button></div>
           <div className="hero-footnote"><span className="tiny-line" /> 3 CONCEITOS. INFINITAS POSSIBILIDADES.</div>
         </div>
-        <Button variant="ghost" className="hero-product-link" onClick={() => setSelected(products[0])}><span><small>EM DESTAQUE / 01</small>Modu-Desk</span><ArrowUpRight /></Button>
+        <Button variant="ghost" className="hero-product-link" onClick={() => setSelected(products[0] ?? null)}><span><small>EM DESTAQUE / 01</small>Modu-Desk</span><ArrowUpRight /></Button>
         <div className="hero-index"><span>01</span><i />03</div>
       </section>
 
