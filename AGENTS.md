@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Application structure
+- Keep the product showcase on the index route with browser-safe product data and a shared detail dialog; this keeps exploration fast without requiring a backend.
+- Define the showcase palette and presentation styles in src/styles.css and use the shared Button component for actions; this keeps the visual system consistent.
