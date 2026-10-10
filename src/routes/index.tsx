@@ -3,9 +3,10 @@ import { useState } from 'react'
 import { ArrowUpRight, ArrowRight, Layers3, Wifi, Zap, MoveUpRight, Menu, X, Sparkles, Scan, Footprints, Monitor, Shirt, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import deskImage from '@/assets/modu-desk.jpg'
-import shirtImage from '@/assets/spider-flex.jpg'
-import shoeImage from '@/assets/mcfly.jpg'
+const base = import.meta.env.BASE_URL
+const deskImage = `${base}assets/modu-desk.jpg`
+const shirtImage = `${base}assets/spider-flex.jpg`
+const shoeImage = `${base}assets/mcfly.jpg`
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
