@@ -12,6 +12,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 const pagesBase = process.env.GITHUB_PAGES_BASE; // e.g. "/smart-living-hub/"
 
 export default defineConfig({
+  // GitHub Pages only serves files, so skip the server bundle there and let
+  // TanStack Start prerender with its own preview server.
+  ...(pagesBase ? { nitro: false } : {}),
   vite: {
     ...(pagesBase ? { base: pagesBase } : {}),
     optimizeDeps: {
