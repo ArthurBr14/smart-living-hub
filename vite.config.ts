@@ -9,7 +9,7 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 // GitHub Pages build (used only by .github/workflows/deploy-pages.yml):
 // the site lives under https://<user>.github.io/<repo>/, so every asset and
 // route needs that sub-path, and the page must be pre-rendered to static HTML.
-const pagesBase = process.env.GITHUB_PAGES_BASE; // e.g. "/smart-living-hub/"
+const pagesBase = process.env["GITHUB_PAGES_BASE"]; // e.g. "/smart-living-hub/"
 
 export default defineConfig({
   // GitHub Pages only serves files, so skip the server bundle there and let
