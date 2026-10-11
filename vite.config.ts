@@ -6,8 +6,17 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// GitHub Pages build (used only by .github/workflows/deploy-pages.yml):
+// the site lives under https://<user>.github.io/<repo>/, so every asset and
+// route needs that sub-path, and the page must be pre-rendered to static HTML.
+const pagesBase = process.env["GITHUB_PAGES_BASE"]; // e.g. "/smart-living-hub/"
+
 export default defineConfig({
+  // GitHub Pages only serves files, so skip the server bundle there and let
+  // TanStack Start prerender with its own preview server.
+  ...(pagesBase ? { nitro: false } : {}),
   vite: {
+    ...(pagesBase ? { base: pagesBase } : {}),
     optimizeDeps: {
       // Prepare the showcase dependencies alongside React before the first render.
       // Late discovery otherwise replaces React's optimized module graph while
@@ -26,5 +35,12 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    ...(pagesBase
+      ? {
+          router: { basepath: pagesBase.replace(/\/$/, "") },
+          pages: [{ path: "/" }],
+          prerender: { enabled: true, autoStaticPathsDiscovery: false },
+        }
+      : {}),
   },
 });

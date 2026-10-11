@@ -49,6 +49,12 @@ src/
 
 TanStack Start (React 19 + Vite), TypeScript, Tailwind CSS v4, componentes Radix UI.
 
+## Publicação no GitHub Pages
+
+O arquivo `.github/workflows/deploy-pages.yml` gera o site estático e o publica a cada envio para a branch `main`.
+
+Configuração única no GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Depois disso, o site fica em `https://<usuario>.github.io/<repositorio>/`. O andamento aparece na aba **Actions**.
+
 ## Sincronização com o Lovable
 
 Este repositório está conectado ao projeto no Lovable. As mudanças feitas aqui e enviadas ao repositório aparecem no Lovable, e as mudanças feitas no Lovable são commitadas aqui automaticamente.
