@@ -16,8 +16,10 @@ const formatPhone = (raw: string) => {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
 }
 
+type Errors = { name?: string; email?: string; phone?: string }
+
 export function validatePreSale(f: { name: string; email: string; phone: string }) {
-  const e: Record<string, string> = {}
+  const e: Errors = {}
   const name = f.name.trim()
   if (name.split(/\s+/).length < 2 || name.length < 5) e.name = 'Informe seu nome completo (nome e sobrenome).'
   else if (name.length > 100) e.name = 'Nome muito longo.'
@@ -31,7 +33,7 @@ export function PreSaleDialog({ products, productId, onClose, onChangeProduct }:
   const product = products.find(p => p.id === productId)
   const [qty, setQty] = useState(1)
   const [form, setForm] = useState({ name: '', email: '', phone: '' })
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Errors>({})
   const [done, setDone] = useState<string | null>(null)
 
   const close = () => { onClose(); setTimeout(() => { setDone(null); setErrors({}); setQty(1) }, 200) }
