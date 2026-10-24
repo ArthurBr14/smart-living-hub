@@ -45,6 +45,7 @@ function Index() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const [presaleId, setPresaleId] = useState<string | null>(null)
+  const presaleProduct = products.find(product => product.id === presaleId)
   const openPresale = (id: string) => { setSelected(null); setPresaleId(id) }
   return (
     <main>
@@ -87,7 +88,7 @@ function Index() {
       <footer className="site-footer"><a href="#" className="wordmark">NEXT<span>LAB</span><span className="brand-dot">®</span></a><p>Imaginação que move o amanhã.</p><span>© 2026 NEXTLAB</span><Button asChild variant="ghost" size="icon"><a href="#" aria-label="Voltar ao topo"><MoveUpRight /></a></Button></footer>
 
       <Dialog open={selected !== null} onOpenChange={open => { if (!open) setSelected(null) }}><DialogContent className="product-dialog">{selected && <><div className="dialog-product-image"><img src={selected.image} alt={selected.name} width={1024} height={1024} /><span className="eyebrow">{selected.category}</span></div><div className="dialog-product-copy"><span className="eyebrow muted-eyebrow">CONCEITO / {selected.id}</span><DialogTitle className="dialog-title">{selected.name}</DialogTitle><DialogDescription>{selected.description}</DialogDescription><div className="feature-list">{selected.features.map(feature => <div key={feature.title}><ChevronRight size={18} /><div><h3>{feature.title}</h3><p>{feature.text}</p></div></div>)}</div><div className="price-line"><s>{formatBRL(selected.price)}</s><strong>{formatBRL(selected.presalePrice)}</strong><em>PRÉ-VENDA</em></div><p className="dialog-note">Imagem ilustrativa · Reserva sem pagamento antecipado</p><div className="product-buy-row"><Button onClick={() => openPresale(selected.id)}>Reservar na pré-venda <ArrowRight /></Button><Button variant="outline" onClick={() => setSelected(null)}>Continuar explorando</Button></div></div></>}</DialogContent></Dialog>
-      <PreSaleDialog products={products} productId={presaleId} onClose={() => setPresaleId(null)} onChangeProduct={setPresaleId} />
+      {presaleProduct && <PreSaleDialog key={presaleProduct.id} product={presaleProduct} onClose={() => setPresaleId(null)} />}
       <Dialog open={aboutOpen} onOpenChange={setAboutOpen}><DialogContent className="vision-dialog"><span className="eyebrow">/ NOSSA VISÃO</span><DialogTitle className="dialog-title">Imaginar é o primeiro passo.</DialogTitle><DialogDescription>A NEXTLAB reúne três conceitos que exploram o encontro entre tecnologia e vida cotidiana. Organização inteligente, moda adaptável e movimento personalizado: ideias para um futuro com mais possibilidades.</DialogDescription><p>Esta é uma apresentação conceitual, não uma loja. As imagens são ilustrações das ideias, e as tecnologias descritas representam propostas de desenvolvimento.</p><Button onClick={() => { setAboutOpen(false); document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' }) }}>Conhecer os conceitos <ArrowUpRight /></Button></DialogContent></Dialog>
     </main>
   )
