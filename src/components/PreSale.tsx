@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 
-export type PreSaleProduct = { id: string; name: string; price: number; presalePrice: number }
+export type PreSaleProduct = { id: string; name: string; image: string; price: number; presalePrice: number }
 
 export const formatBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -29,20 +29,26 @@ export function validatePreSale(f: { name: string; email: string; phone: string 
   return e
 }
 
-export function PreSaleDialog({ products, productId, onClose, onChangeProduct }: { products: PreSaleProduct[]; productId: string | null; onClose: () => void; onChangeProduct: (id: string) => void }) {
-  const product = products.find(p => p.id === productId)
+export function PreSaleDialog({ product, onClose }: { product?: PreSaleProduct | null; onClose: () => void }) {
+  // A preview refresh can briefly retain a caller with the previous props.
+  // Never mount the form until there is a selected product.
+  if (!product) return null
+  return <ProductReservation key={product.id} product={product} onClose={onClose} />
+}
+
+function ProductReservation({ product, onClose }: { product: PreSaleProduct; onClose: () => void }) {
   const [qty, setQty] = useState(1)
   const [form, setForm] = useState({ name: '', email: '', phone: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [done, setDone] = useState<string | null>(null)
 
-  const close = () => { onClose(); setTimeout(() => { setDone(null); setErrors({}); setQty(1) }, 200) }
+  const close = onClose
 
   const submit = (ev: React.FormEvent) => {
     ev.preventDefault()
     const e = validatePreSale(form)
     setErrors(e)
-    if (Object.keys(e).length || !product) return
+    if (Object.keys(e).length) return
     const code = `NX-${product.id}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
     try {
       const list = JSON.parse(localStorage.getItem('nextlab-presale') || '[]')
@@ -53,9 +59,9 @@ export function PreSaleDialog({ products, productId, onClose, onChangeProduct }:
   }
 
   return (
-    <Dialog open={productId !== null} onOpenChange={o => { if (!o) close() }}>
+    <Dialog open onOpenChange={o => { if (!o) close() }}>
       <DialogContent className="presale-dialog">
-        {product && (done ? (
+        {done ? (
           <div className="presale-success">
             <CheckCircle2 size={44} />
             <DialogTitle className="dialog-title">Reserva confirmada!</DialogTitle>
@@ -66,15 +72,12 @@ export function PreSaleDialog({ products, productId, onClose, onChangeProduct }:
         ) : (
           <form onSubmit={submit} noValidate className="presale-form">
             <span className="eyebrow">/ PRÉ-VENDA EXCLUSIVA</span>
-            <DialogTitle className="dialog-title">Garanta o seu</DialogTitle>
+            <DialogTitle className="dialog-title">Reserve seu {product.name}</DialogTitle>
             <DialogDescription>Reserve agora com preço de lançamento. Nenhum pagamento é cobrado neste momento.</DialogDescription>
 
-            <div className="presale-products">
-              {products.map(p => (
-                <button type="button" key={p.id} className={p.id === product.id ? 'active' : ''} onClick={() => onChangeProduct(p.id)}>
-                  <span>{p.name}</span><small>{formatBRL(p.presalePrice)}</small>
-                </button>
-              ))}
+            <div className="presale-product">
+              <img src={product.image} alt={product.name} width={88} height={88} />
+              <div><strong>{product.name}</strong><small>{formatBRL(product.presalePrice)} / unidade</small></div>
             </div>
 
             <div className="presale-qty">
@@ -108,7 +111,7 @@ export function PreSaleDialog({ products, productId, onClose, onChangeProduct }:
             </div>
             <Button type="submit" size="lg">Confirmar pré-venda</Button>
           </form>
-        ))}
+        )}
       </DialogContent>
     </Dialog>
   )
