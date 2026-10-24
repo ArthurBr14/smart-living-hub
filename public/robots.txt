@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://arthurbr14.github.io/smart-living-hub/sitemap.xml
