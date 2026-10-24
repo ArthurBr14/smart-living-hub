@@ -29,7 +29,14 @@ export function validatePreSale(f: { name: string; email: string; phone: string 
   return e
 }
 
-export function PreSaleDialog({ product, onClose }: { product: PreSaleProduct; onClose: () => void }) {
+export function PreSaleDialog({ product, onClose }: { product?: PreSaleProduct | null; onClose: () => void }) {
+  // A preview refresh can briefly retain a caller with the previous props.
+  // Never mount the form until there is a selected product.
+  if (!product) return null
+  return <ProductReservation key={product.id} product={product} onClose={onClose} />
+}
+
+function ProductReservation({ product, onClose }: { product: PreSaleProduct; onClose: () => void }) {
   const [qty, setQty] = useState(1)
   const [form, setForm] = useState({ name: '', email: '', phone: '' })
   const [errors, setErrors] = useState<Errors>({})
