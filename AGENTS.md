@@ -16,4 +16,4 @@
 - Grant administrator access only through a protected role row after the designated owner's email is verified; public signup must never grant management access to other accounts.
 - Define the showcase palette and presentation styles in src/styles.css and use the shared Button component for actions; this keeps the visual system consistent.
 - Pre-optimize the showcase's React-dependent UI packages in Vite alongside the template's React entries; this prevents late dependency discovery from replacing the React module graph in an open preview.
-- Build for GitHub Pages only when GITHUB_PAGES_BASE is set (sub-path base, router basepath, nitro off, prerender "/"), and reference public files through import.meta.env.BASE_URL; the repo sub-path breaks root-absolute URLs while Lovable hosting stays at "/".
+- Build for GitHub Pages only when GITHUB_PAGES_BASE is set (sub-path base, router basepath, nitro off, explicit public and client-gated page prerender paths), and reference public files through import.meta.env.BASE_URL; the repo sub-path breaks root-absolute URLs while Lovable hosting stays at "/".
