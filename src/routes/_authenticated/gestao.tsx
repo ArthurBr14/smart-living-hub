@@ -12,7 +12,7 @@ const statuses = { reservado: 'Reservado', contatado: 'Contatado', vendido: 'Ven
 export const Route = createFileRoute('/_authenticated/gestao')({
   head: () => ({ meta: [{ title: 'Clientes e vendas — NEXTLAB' }, { name: 'description', content: 'Gestão privada de clientes, reservas e vendas NEXTLAB.' }, { property: 'og:title', content: 'Clientes e vendas — NEXTLAB' }, { property: 'og:description', content: 'Área administrativa privada NEXTLAB.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' }, { name: 'robots', content: 'noindex, nofollow' }] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(managementOptions),
-  errorComponent: ({ error, reset }) => <main className="management-page"><h1>Não foi possível carregar</h1><p>{error.message}</p><Button onClick={reset}>Tentar novamente</Button></main>,
+  errorComponent: ({ error, reset }) => <main className="management-page"><h1>Não foi possível carregar</h1><p>{error instanceof Error ? error.message : 'Tente novamente.'}</p><Button onClick={reset}>Tentar novamente</Button></main>,
   component: Management,
 })
 function Management() {

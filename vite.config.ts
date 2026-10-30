@@ -38,7 +38,7 @@ export default defineConfig({
     ...(pagesBase
       ? {
           router: { basepath: pagesBase.replace(/\/$/, "") },
-          pages: [{ path: "/" }],
+          pages: [{ path: "/" }, { path: "/auth" }, { path: "/gestao" }, { path: "/reset-password" }],
           prerender: { enabled: true, autoStaticPathsDiscovery: false },
         }
       : {}),

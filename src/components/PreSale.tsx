@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { submitReservation } from '@/lib/reservations'
 
 export type PreSaleProduct = { id: string; name: string; image: string; price: number; presalePrice: number }
 
@@ -41,21 +42,23 @@ function ProductReservation({ product, onClose }: { product: PreSaleProduct; onC
   const [form, setForm] = useState({ name: '', email: '', phone: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [done, setDone] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const close = onClose
 
-  const submit = (ev: React.FormEvent) => {
+  const submit = async (ev: React.FormEvent) => {
     ev.preventDefault()
     const e = validatePreSale(form)
     setErrors(e)
     if (Object.keys(e).length) return
-    const code = `NX-${product.id}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
+    setBusy(true)
+    setSubmitError('')
     try {
-      const list = JSON.parse(localStorage.getItem('nextlab-presale') || '[]')
-      list.push({ code, product: product.name, qty, ...form, name: form.name.trim(), email: form.email.trim(), date: new Date().toISOString() })
-      localStorage.setItem('nextlab-presale', JSON.stringify(list))
-    } catch { /* armazenamento indisponível */ }
-    setDone(code)
+      const code = await submitReservation({ productId: product.id, qty, ...form })
+      setDone(code)
+    } catch (error) { setSubmitError(error instanceof Error ? error.message : 'Não foi possível registrar a reserva. Tente novamente.') }
+    finally { setBusy(false) }
   }
 
   return (
@@ -109,7 +112,8 @@ function ProductReservation({ product, onClose }: { product: PreSaleProduct; onC
               <div><small>De {formatBRL(product.price * qty)}</small><strong>{formatBRL(product.presalePrice * qty)}</strong></div>
               <span>Economia de {formatBRL((product.price - product.presalePrice) * qty)}</span>
             </div>
-            <Button type="submit" size="lg">Confirmar pré-venda</Button>
+            {submitError && <p className="presale-error" role="alert">{submitError}</p>}
+            <Button type="submit" size="lg" disabled={busy}>{busy ? 'Registrando…' : 'Confirmar pré-venda'}</Button>
           </form>
         )}
       </DialogContent>
