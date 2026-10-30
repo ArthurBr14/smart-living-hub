@@ -29,6 +29,8 @@ jobs:
         env:
           # O site fica em https://<usuario>.github.io/<repositorio>/
           GITHUB_PAGES_BASE: /${{ github.event.repository.name }}/
+          VITE_SUPABASE_URL: https://pilynbazsvotesopqykx.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_LXZtM2DvaUma5HFc-tMstQ_jOHWU0WX
         run: bunx vite build
 
       - name: Preparar arquivos

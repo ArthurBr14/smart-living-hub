@@ -12,6 +12,8 @@
 ## Application structure
 - Keep the product showcase on the index route with browser-safe product data and a shared detail dialog; this keeps exploration fast without requiring a backend.
 - Pass only the selected product to the reservation dialog and mount it keyed by product ID; this prevents product switching and isolates each reservation's form state.
+- Submit reservations through the validated Cloud SQL RPC and read management data through browser Cloud clients with admin-only RLS; this preserves GitHub Pages compatibility without exposing customer data.
+- Grant administrator access only through a protected role row after the designated owner's email is verified; public signup must never grant management access to other accounts.
 - Define the showcase palette and presentation styles in src/styles.css and use the shared Button component for actions; this keeps the visual system consistent.
 - Pre-optimize the showcase's React-dependent UI packages in Vite alongside the template's React entries; this prevents late dependency discovery from replacing the React module graph in an open preview.
 - Build for GitHub Pages only when GITHUB_PAGES_BASE is set (sub-path base, router basepath, nitro off, prerender "/"), and reference public files through import.meta.env.BASE_URL; the repo sub-path breaks root-absolute URLs while Lovable hosting stays at "/".
