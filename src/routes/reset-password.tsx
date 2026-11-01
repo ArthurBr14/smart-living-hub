@@ -84,11 +84,11 @@ function ResetPassword() {
    {phase === 'form' && !saved && <form onSubmit={submit}>
     <div>
      <Label htmlFor="new-password">Nova senha</Label>
-     <Input id="new-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)} />
+     <Input id="new-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={password} onChange={e => { setPassword(e.target.value); setMessage('') }} />
     </div>
     <div>
      <Label htmlFor="confirm-password">Confirmar nova senha</Label>
-     <Input id="confirm-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={confirm} onChange={e => setConfirm(e.target.value)} />
+     <Input id="confirm-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={confirm} onChange={e => { setConfirm(e.target.value); setMessage('') }} />
      <Button type="button" variant="link" onClick={() => setReveal(value => !value)}>{reveal ? 'Ocultar as senhas' : 'Mostrar as senhas'}</Button>
     </div>
     <Button type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Salvar nova senha'}</Button>

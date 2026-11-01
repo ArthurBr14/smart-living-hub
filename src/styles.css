@@ -261,5 +261,6 @@
 .auth-links { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 12px; }
 .auth-panel p svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; }
 .auth-panel form > div > button { justify-self: start; padding: 0; height: auto; font-size: 13px; }
+.auth-panel p[role="alert"] { color: var(--destructive); }
 @media (max-width: 1000px) { .management-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } .management-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .management-title { align-items: start; flex-direction: column; } .management-title h1 { font-size: 28px; } .management-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .management-stats strong { font-size: 20px; } }
