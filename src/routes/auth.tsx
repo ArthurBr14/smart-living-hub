@@ -23,7 +23,7 @@ function Auth() {
    if (mode === 'reset') {
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}reset-password` })
     if (error) throw error
-    setMessage('Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha.')
+    setMessage('Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também a caixa de spam.')
    } else if (mode === 'signup') {
     const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name.trim() }, emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth` } })
     if (error) throw error

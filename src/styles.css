@@ -259,5 +259,7 @@
 .auth-panel p { margin-block: 16px; font-size: 14px; color: var(--muted-foreground); overflow-wrap: anywhere; }
 .auth-social { display: grid; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
 .auth-links { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 12px; }
+.auth-panel p svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; }
+.auth-panel form > div > button { justify-self: start; padding: 0; height: auto; font-size: 13px; }
 @media (max-width: 1000px) { .management-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } .management-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .management-title { align-items: start; flex-direction: column; } .management-title h1 { font-size: 28px; } .management-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .management-stats strong { font-size: 20px; } }
