@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, CheckCircle2, Eye, EyeOff, ShieldAlert } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, ShieldAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -85,14 +85,14 @@ function ResetPassword() {
     <div>
      <Label htmlFor="new-password">Nova senha</Label>
      <Input id="new-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)} />
-     <Button type="button" variant="link" onClick={() => setReveal(value => !value)}>{reveal ? 'Ocultar senha' : 'Mostrar senha'}</Button>
     </div>
     <div>
      <Label htmlFor="confirm-password">Confirmar nova senha</Label>
      <Input id="confirm-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={confirm} onChange={e => setConfirm(e.target.value)} />
+     <Button type="button" variant="link" onClick={() => setReveal(value => !value)}>{reveal ? 'Ocultar as senhas' : 'Mostrar as senhas'}</Button>
     </div>
     <Button type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Salvar nova senha'}</Button>
-    <p>Use pelo menos 8 caracteres. Depois de salvar, você volta direto para a área privada.</p>
+    <p>Depois de salvar, você volta direto para a área privada.</p>
    </form>}
 
    {saved && <>
