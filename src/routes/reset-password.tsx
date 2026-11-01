@@ -84,12 +84,12 @@ function ResetPassword() {
    {phase === 'form' && !saved && <form onSubmit={submit}>
     <div>
      <Label htmlFor="new-password">Nova senha</Label>
-     <Input id="new-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" minLength={8} required value={password} onChange={e => setPassword(e.target.value)} />
+     <Input id="new-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)} />
      <Button type="button" variant="link" onClick={() => setReveal(value => !value)}>{reveal ? 'Ocultar senha' : 'Mostrar senha'}</Button>
     </div>
     <div>
      <Label htmlFor="confirm-password">Confirmar nova senha</Label>
-     <Input id="confirm-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" minLength={8} required value={confirm} onChange={e => setConfirm(e.target.value)} />
+     <Input id="confirm-password" type={reveal ? 'text' : 'password'} autoComplete="new-password" required value={confirm} onChange={e => setConfirm(e.target.value)} />
     </div>
     <Button type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Salvar nova senha'}</Button>
     <p>Use pelo menos 8 caracteres. Depois de salvar, você volta direto para a área privada.</p>
