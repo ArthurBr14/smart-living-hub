@@ -16,7 +16,7 @@ function Auth() {
  const navigate = useNavigate()
  const { next } = Route.useSearch()
  const dest = next === '/' ? '/' : '/gestao'
- const back = `${window.location.origin}${import.meta.env.BASE_URL}auth${next ? '?next=/' : ''}`
+ const back = () => `${window.location.origin}${import.meta.env.BASE_URL}auth${next ? '?next=/' : ''}`
  const [mode, setMode] = useState<'login' | 'signup' | 'reset'>('login')
  const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [name, setName] = useState('')
  const [message, setMessage] = useState(''); const [busy, setBusy] = useState(false)
@@ -29,7 +29,7 @@ function Auth() {
     if (error) throw error
     setMessage('Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também a caixa de spam.')
    } else if (mode === 'signup') {
-    const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name.trim() }, emailRedirectTo: back } })
+    const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name.trim() }, emailRedirectTo: back() } })
     if (error) throw error
     setMessage('Confira seu e-mail para confirmar o cadastro. Depois é só entrar para concluir sua reserva.')
    } else {
@@ -42,7 +42,7 @@ function Auth() {
  }
  async function social(provider: 'google' | 'lovable') {
   setBusy(true); setMessage('')
-  const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: back })
+  const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: back() })
   if (result.error) setMessage(result.error.message)
   else if (!result.redirected) await navigate({ to: dest })
   setBusy(false)
