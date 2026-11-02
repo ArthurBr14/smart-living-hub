@@ -4,5 +4,5 @@
 - [x] Criar página de clientes e reservas com filtros.
 - [x] Preparar publicação no GitHub Pages; testar reserva online, filtros e acesso sem login.
 - [x] Criar página de recuperação de senha com validação, aviso de link expirado e retorno à área privada.
-- [ ] Verificar gestão autenticada e autorização do proprietário: aguarda cadastro e confirmação do e-mail autorizado.
+- [x] Verificar gestão autenticada e autorização do proprietário: reserva registrada e lida na área privada como masteranunciosarthur@gmail.com (admin).
 - [ ] Verificar publicação e retorno de login no GitHub: aguarda atualização pelo GitHub Actions e login do proprietário.
