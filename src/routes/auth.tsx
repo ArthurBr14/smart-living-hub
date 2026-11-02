@@ -29,8 +29,9 @@ function Auth() {
     if (error) throw error
     setMessage('Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também a caixa de spam.')
    } else if (mode === 'signup') {
-    const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name.trim() }, emailRedirectTo: back() } })
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name.trim() }, emailRedirectTo: back() } })
     if (error) throw error
+    if (data.user && (data.user.identities?.length ?? 0) === 0) { setMessage('Este e-mail já tem uma conta, por isso nenhum e-mail de confirmação foi enviado. Entre com "Continuar com Google" ou use "Esqueci minha senha" para criar uma senha.'); return }
     setMessage('Confira seu e-mail para confirmar o cadastro. Depois é só entrar para concluir sua reserva.')
    } else {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
