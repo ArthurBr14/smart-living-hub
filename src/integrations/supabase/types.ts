@@ -45,6 +45,7 @@ export type Database = {
           quantity: number
           status: string
           unit_price: number
+          user_id: string | null
         }
         Insert: {
           code?: string
@@ -58,6 +59,7 @@ export type Database = {
           quantity: number
           status?: string
           unit_price: number
+          user_id?: string | null
         }
         Update: {
           code?: string
@@ -71,6 +73,7 @@ export type Database = {
           quantity?: number
           status?: string
           unit_price?: number
+          user_id?: string | null
         }
         Relationships: []
       }

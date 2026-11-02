@@ -1,10 +1,12 @@
-import { useState } from 'react'
-import { CheckCircle2, Minus, Plus } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link } from '@tanstack/react-router'
+import { CheckCircle2, LogIn, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { submitReservation } from '@/lib/reservations'
+import { supabase } from '@/integrations/supabase/client'
 
 export type PreSaleProduct = { id: string; name: string; image: string; price: number; presalePrice: number }
 
@@ -44,8 +46,40 @@ function ProductReservation({ product, onClose }: { product: PreSaleProduct; onC
   const [done, setDone] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [auth, setAuth] = useState<'checking' | 'in' | 'out'>('checking')
+
+  useEffect(() => {
+    let alive = true
+    supabase.auth.getSession().then(({ data }) => {
+      if (!alive) return
+      const user = data.session?.user
+      if (!user) return setAuth('out')
+      const meta = (user.user_metadata ?? {}) as { full_name?: string; name?: string }
+      setForm(f => ({ ...f, name: f.name || meta.full_name || meta.name || '', email: f.email || user.email || '' }))
+      setAuth('in')
+    })
+    return () => { alive = false }
+  }, [])
 
   const close = onClose
+
+  if (auth !== 'in') {
+    return (
+      <Dialog open onOpenChange={o => { if (!o) close() }}>
+        <DialogContent className="presale-dialog">
+          <div className="presale-form">
+            <span className="eyebrow">/ PRÉ-VENDA EXCLUSIVA</span>
+            <DialogTitle className="dialog-title">{auth === 'checking' ? 'Carregando…' : `Entre para reservar o ${product.name}`}</DialogTitle>
+            <DialogDescription>{auth === 'checking' ? 'Verificando sua conta.' : 'Para fazer a reserva, entre na sua conta ou crie seu perfil. Leva menos de um minuto.'}</DialogDescription>
+            {auth === 'out' && <>
+              <Button asChild size="lg"><Link to="/auth" search={{ next: '/' }}><LogIn /> Entrar ou criar perfil</Link></Button>
+              <Button variant="ghost" onClick={close}>Agora não</Button>
+            </>}
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   const submit = async (ev: React.FormEvent) => {
     ev.preventDefault()
