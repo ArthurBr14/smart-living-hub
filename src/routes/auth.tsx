@@ -9,7 +9,7 @@ import { lovable } from '@/integrations/lovable/index'
 import '@lovable.dev/cloud-auth-js/styles.css'
 export const Route = createFileRoute('/auth')({
  head: () => ({ meta: [{ title: 'Acesso privado — NEXTLAB' }, { name: 'description', content: 'Entre na área privada de clientes e vendas NEXTLAB.' }, { property: 'og:title', content: 'Acesso privado — NEXTLAB' }, { property: 'og:description', content: 'Acesso à gestão NEXTLAB.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' }, { name: 'robots', content: 'noindex, nofollow' }] }),
- validateSearch: (s: Record<string, unknown>): { next?: '/' } => (s.next === '/' ? { next: '/' } : {}),
+ validateSearch: (s: Record<string, unknown>): { next?: '/' } => (s['next'] === '/' ? { next: '/' } : {}),
  component: Auth,
 })
 function Auth() {
