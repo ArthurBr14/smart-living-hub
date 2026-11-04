@@ -264,3 +264,12 @@
 .auth-panel p[role="alert"] { color: var(--destructive); }
 @media (max-width: 1000px) { .management-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } .management-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .management-title { align-items: start; flex-direction: column; } .management-title h1 { font-size: 28px; } .management-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .management-stats strong { font-size: 20px; } }
+
+.management-products { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+.management-products td .inline-flex + .inline-flex { margin-left: .25rem; }
+.management-product-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+.management-product-form h2, .management-product-form .wide, .management-product-form > button { grid-column: 1 / -1; }
+.management-product-form h2 { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; }
+.management-product-form > div { display: grid; gap: .4rem; }
+.management-product-form textarea { width: 100%; border: 1px solid var(--input); border-radius: .5rem; background: transparent; color: var(--foreground); padding: .6rem .75rem; font: inherit; }
+.management-product-form > button { justify-self: start; }

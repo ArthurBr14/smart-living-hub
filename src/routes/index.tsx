@@ -4,10 +4,10 @@ import { ArrowUpRight, ArrowRight, Layers3, Wifi, Zap, MoveUpRight, Menu, X, Spa
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { PreSaleDialog, formatBRL } from '@/components/PreSale'
-const base = import.meta.env.BASE_URL
-const deskImage = `${base}assets/modu-desk.jpg`
-const shirtImage = `${base}assets/spider-flex.jpg`
-const shoeImage = `${base}assets/mcfly.jpg`
+import { useQuery } from '@tanstack/react-query'
+import { fallbackProducts, productsQuery, resolveImage, type Product } from '@/lib/products'
+const deskImage = resolveImage('assets/modu-desk.jpg')
+const icons: Record<string, typeof Monitor> = { '01': Monitor, '02': Shirt, '03': Footprints }
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -21,27 +21,10 @@ export const Route = createFileRoute('/')({
   component: Index,
 })
 
-const products = [
-  { id: '01', name: 'Modu-Desk', category: 'SMART WORKSPACE', price: 1499, presalePrice: 1199, caption: 'Seu espaço. Mais inteligente.', description: 'Organização modular que acompanha suas ideias. Conectada, intuitiva e feita para evoluir com você.', image: deskImage, icon: Monitor, tags: ['Modular', 'E-Ink Touch', 'Conectado'], features: [
-    { title: 'Click-N-Stack', text: 'Módulos independentes com travas magnéticas para expandir sua organização na vertical ou na horizontal.' },
-    { title: 'Um lugar para cada ideia', text: 'Divisórias em trilhos ajustáveis para documentos A4, A5, DL e envelopes, com nichos para canetas e pequenos materiais.' },
-    { title: 'Mais espaço, mais possibilidades', text: 'O suporte superior integrado eleva seu monitor ou notebook e libera espaço na mesa.' },
-    { title: 'E-Ink Touch + Find-My-Doc', text: 'Etiquetas digitais na tela frontal e documentos mapeados pelo app via Wi-Fi ou Bluetooth. Ao buscar um arquivo, o LED indica a gaveta correspondente.' },
-  ] },
-  { id: '02', name: 'Spider Flex', category: 'SMART WEAR', price: 399, presalePrice: 299, caption: 'Vista sua próxima versão.', description: 'O universo do seu herói encontra o tecido inteligente. Estilo que se transforma e se adapta a você.', image: shirtImage, icon: Shirt, tags: ['Biomimético', 'Postura', 'Color-shift'], features: [
-    { title: 'Um ajuste que é só seu', text: 'O tecido inteligente biomimético se adapta às curvas e ao tamanho do corpo de quem veste.' },
-    { title: 'Tecnologia para a postura', text: 'Sistema de compressão ergonômica concebido para auxiliar a postura em tempo real.' },
-    { title: 'Um herói. Diferentes versões.', text: 'O conceito de tecido reativo permite alternar cores por temperatura ou comando no app, inspirado nos uniformes Clássico, Black Suit e Stark.' },
-  ] },
-  { id: '03', name: 'Tênis McFly', category: 'SMART MOVEMENT', price: 899, presalePrice: 699, caption: 'O futuro está nos seus pés.', description: 'Inspirado no cinema. Projetado para o seu movimento. Um ajuste preciso, com um simples toque entre os pés.', image: shoeImage, icon: Footprints, tags: ['Autoajuste', 'Ergonômico', 'Adaptável'], features: [
-    { title: 'Um toque para ajustar', text: 'Bata um pé no outro para ativar o sistema de ajuste automático ao tamanho dos seus pés.' },
-    { title: 'Cada pé, um ajuste', text: 'As palmilhas se adaptam individualmente, respeitando as diferenças entre seus pés.' },
-    { title: 'Da tela para a sua imaginação', text: 'Um conceito inspirado nos tênis de Marty McFly em De Volta para o Futuro, unindo nostalgia e tecnologia.' },
-  ] },
-]
-
 function Index() {
-  const [selected, setSelected] = useState<(typeof products)[number] | null>(null)
+  const { data } = useQuery({ ...productsQuery, placeholderData: fallbackProducts })
+  const products = (data ?? fallbackProducts).filter(p => p.active)
+  const [selected, setSelected] = useState<Product | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const [presaleId, setPresaleId] = useState<string | null>(null)
@@ -52,7 +35,7 @@ function Index() {
       <header className="site-header">
         <a href="#" className="wordmark" aria-label="NEXTLAB início"><span className="brand-symbol"><MoveUpRight /></span>NEXT<span>LAB</span><span className="brand-dot">®</span></a>
         <nav className="desktop-nav" aria-label="Navegação principal"><a href="#produtos">Produtos</a><a href="#tecnologia">Tecnologia</a><a href="#sobre">Sobre a NEXTLAB</a></nav>
-        <Button variant="outline" className="header-cta" onClick={() => openPresale('01')}>Pré-venda <ArrowUpRight /></Button>
+        <Button variant="outline" className="header-cta" onClick={() => openPresale(products[0]?.id ?? '01')}>Pré-venda <ArrowUpRight /></Button>
         <Button variant="ghost" size="icon" className="mobile-menu-button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
         {menuOpen && <nav className="mobile-nav" aria-label="Navegação móvel">{[['Produtos', '#produtos'], ['Tecnologia', '#tecnologia'], ['Sobre a NEXTLAB', '#sobre']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRight size={16} /></a>)}</nav>}
       </header>
@@ -77,7 +60,7 @@ function Index() {
         <div className="section-heading"><div><span className="eyebrow muted-eyebrow">/ NOSSA COLEÇÃO</span><h2>Três produtos.<br />Uma nova perspectiva.</h2></div><p>Não é apenas sobre o que vem a seguir.<br />É sobre o que você pode fazer diferente, agora.</p></div>
         <div className="product-grid">{products.map(product => <article key={product.id} className="product-card">
           <div className="product-image-wrap"><img src={product.image} alt={product.name} width={1024} height={1024} loading="lazy" /><span className="product-category">{product.category}</span><span className="product-number">/{product.id}</span><Button variant="outline" size="icon" className="product-image-action" aria-label={`Conhecer ${product.name}`} onClick={() => setSelected(product)}><ArrowUpRight /></Button></div>
-          <div className="product-card-body"><div className="product-title-line"><h3>{product.name}</h3><product.icon size={20} /></div><h4>{product.caption}</h4><p>{product.description}</p><div className="tags">{product.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="price-line"><s>{formatBRL(product.price)}</s><strong>{formatBRL(product.presalePrice)}</strong><em>PRÉ-VENDA</em></div><div className="product-buy-row"><Button onClick={() => openPresale(product.id)}>Reservar agora</Button><Button variant="link" className="product-detail-button" onClick={() => setSelected(product)}>Explorar produto <ArrowUpRight /></Button></div></div>
+          <div className="product-card-body"><div className="product-title-line"><h3>{product.name}</h3>{(() => { const Icon = icons[product.id] ?? Sparkles; return <Icon size={20} /> })()}</div><h4>{product.caption}</h4><p>{product.description}</p><div className="tags">{product.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="price-line"><s>{formatBRL(product.price)}</s><strong>{formatBRL(product.presalePrice)}</strong><em>PRÉ-VENDA</em></div><div className="product-buy-row"><Button onClick={() => openPresale(product.id)}>Reservar agora</Button><Button variant="link" className="product-detail-button" onClick={() => setSelected(product)}>Explorar produto <ArrowUpRight /></Button></div></div>
         </article>)}</div>
         <p className="concept-note">Pré-venda aberta: reserve com preço de lançamento, sem pagamento antecipado. Imagens ilustrativas.</p>
       </section>

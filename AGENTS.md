@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Application structure
-- Keep the product showcase on the index route with browser-safe product data and a shared detail dialog; this keeps exploration fast without requiring a backend.
+- Load showcase products and prices from the Cloud products table (public read, admin-only write) with bundled fallback data, and have the reservation RPC read the price from that table; admins edit the catalog without code changes and the site still renders offline/prerendered.
 - Pass only the selected product to the reservation dialog and mount it keyed by product ID; this prevents product switching and isolates each reservation's form state.
 - Submit reservations through the validated Cloud SQL RPC and read management data through browser Cloud clients with admin-only RLS; this preserves GitHub Pages compatibility without exposing customer data.
 - Grant administrator access only through a protected role row after the designated owner's email is verified; public signup must never grant management access to other accounts.
