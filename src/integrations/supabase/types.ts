@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      products: {
+        Row: {
+          active: boolean
+          caption: string
+          category: string
+          created_at: string
+          description: string
+          features: Json
+          id: string
+          image_url: string
+          name: string
+          presale_price: number
+          price: number
+          sort_order: number
+          tags: string[]
+        }
+        Insert: {
+          active?: boolean
+          caption?: string
+          category?: string
+          created_at?: string
+          description?: string
+          features?: Json
+          id: string
+          image_url?: string
+          name: string
+          presale_price: number
+          price: number
+          sort_order?: number
+          tags?: string[]
+        }
+        Update: {
+          active?: boolean
+          caption?: string
+          category?: string
+          created_at?: string
+          description?: string
+          features?: Json
+          id?: string
+          image_url?: string
+          name?: string
+          presale_price?: number
+          price?: number
+          sort_order?: number
+          tags?: string[]
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

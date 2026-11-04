@@ -29,6 +29,13 @@
       "when": 1793630048807,
       "tag": "0003_reservations_require_login",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793761757181,
+      "tag": "0004_admin_managed_products",
+      "breakpoints": true
     }
   ]
 }
