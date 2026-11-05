@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -53,10 +54,10 @@ describe('Header sign-in affordance', () => {
     renderAccount()
     const trigger = await screen.findByRole('button', { name: 'Conta de Arthur Braga' })
     expect(screen.getByText('AB')).toBeTruthy()
-    fireEvent.click(trigger)
+    await userEvent.click(trigger)
     expect(await screen.findByText('arthur@example.com')).toBeTruthy()
     expect(screen.queryByText('Área de gestão')).toBeNull()
-    fireEvent.click(screen.getByText('Sair'))
+    await userEvent.click(screen.getByText('Sair'))
     await waitFor(() => expect(signOut).toHaveBeenCalled())
     expect(navigate).toHaveBeenCalledWith({ to: '/', replace: true })
   })
@@ -65,7 +66,7 @@ describe('Header sign-in affordance', () => {
     rpc.mockResolvedValueOnce({ data: true, error: null })
     getSession.mockResolvedValueOnce({ data: { session: { user } } })
     renderAccount()
-    fireEvent.click(await screen.findByRole('button', { name: 'Conta de Arthur Braga' }))
+    await userEvent.click(await screen.findByRole('button', { name: 'Conta de Arthur Braga' }))
     expect(await screen.findByText('Área de gestão')).toBeTruthy()
   })
 })
