@@ -61,6 +61,13 @@
 .desktop-nav { display: flex; gap: 34px; font-size: 13px; color: var(--muted-foreground); }
 .desktop-nav a:hover { color: var(--primary); }
 .header-cta { height: 41px; font-size: 12px; background: transparent; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.header-account { height: 41px; font-size: 12px; background: transparent; gap: 8px; padding-inline: 12px; }
+.header-account-avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: var(--primary-foreground); display: grid; place-items: center; font-size: 10px; font-weight: 800; letter-spacing: .02em; }
+.header-account-name { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header-account-skeleton { width: 96px; height: 41px; border: 1px solid var(--border); border-radius: 6px; opacity: .45; }
+.header-account-menu { min-width: 220px; }
+.header-account-email { font-size: 12px; color: var(--muted-foreground); overflow-wrap: anywhere; }
 .mobile-menu-button { display: none; }
 .hero { height: 610px; position: relative; isolation: isolate; overflow: hidden; }
 .hero-image { position: absolute; z-index: -3; width: 100%; height: 100%; object-fit: cover; object-position: center 53%; }

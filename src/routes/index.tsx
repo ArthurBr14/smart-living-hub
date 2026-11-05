@@ -4,6 +4,7 @@ import { ArrowUpRight, ArrowRight, Layers3, Wifi, Zap, MoveUpRight, Menu, X, Spa
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { PreSaleDialog, formatBRL } from '@/components/PreSale'
+import { HeaderAccount } from '@/components/HeaderAccount'
 import { useQuery } from '@tanstack/react-query'
 import { fallbackProducts, productsQuery, resolveImage, type Product } from '@/lib/products'
 const deskImage = resolveImage('assets/modu-desk.jpg')
