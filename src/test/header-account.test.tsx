@@ -69,4 +69,12 @@ describe('Header sign-in affordance', () => {
     await userEvent.click(await screen.findByRole('button', { name: 'Conta de Arthur Braga' }))
     expect(await screen.findByText('Área de gestão')).toBeTruthy()
   })
+
+  it('shortens an e-mail-only account name in the header', async () => {
+    getSession.mockResolvedValueOnce({ data: { session: { user: { id: 'u2', email: 'arthurbraga59@gmail.com', user_metadata: {} } } } })
+    renderAccount()
+    await screen.findByRole('button', { name: 'Conta de arthurbraga59@gmail.com' })
+    expect(screen.getByText('arthurbraga59')).toBeTruthy()
+    expect(screen.queryByText('arthurbraga59@gmail.com')).toBeNull()
+  })
 })

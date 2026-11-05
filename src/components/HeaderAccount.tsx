@@ -49,7 +49,7 @@ export function HeaderAccount() {
   }
 
   const name = accountName(user)
-  const first = name.split(/\s+/)[0]
+  const first = name.includes('@') ? name.split('@')[0] : name.split(/\s+/)[0]
 
   return (
     <DropdownMenu>
