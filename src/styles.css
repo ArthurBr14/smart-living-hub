@@ -164,6 +164,8 @@
   .site-header { height: 74px; padding-inline: 6%; }
   .wordmark { font-size: 22px; }
   .desktop-nav, .header-cta { display: none; }
+  .header-account-name { display: none; }
+  .header-account { padding-inline: 9px; }
   .mobile-menu-button { display: inline-flex; }
   .mobile-nav { position: absolute; top: 74px; left: 0; width: 100%; padding: 16px 6%; background: var(--card); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
   .mobile-nav a { padding: 14px 0; font-size: 14px; display: flex; justify-content: space-between; }
