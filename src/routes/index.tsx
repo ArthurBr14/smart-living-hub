@@ -35,7 +35,10 @@ function Index() {
       <header className="site-header">
         <a href="#" className="wordmark" aria-label="NEXTLAB início"><span className="brand-symbol"><MoveUpRight /></span>NEXT<span>LAB</span><span className="brand-dot">®</span></a>
         <nav className="desktop-nav" aria-label="Navegação principal"><a href="#produtos">Produtos</a><a href="#tecnologia">Tecnologia</a><a href="#sobre">Sobre a NEXTLAB</a></nav>
-        <Button variant="outline" className="header-cta" onClick={() => openPresale(products[0]?.id ?? '01')}>Pré-venda <ArrowUpRight /></Button>
+        <div className="header-actions">
+          <Button variant="outline" className="header-cta" onClick={() => openPresale(products[0]?.id ?? '01')}>Pré-venda <ArrowUpRight /></Button>
+          <HeaderAccount />
+        </div>
         <Button variant="ghost" size="icon" className="mobile-menu-button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
         {menuOpen && <nav className="mobile-nav" aria-label="Navegação móvel">{[['Produtos', '#produtos'], ['Tecnologia', '#tecnologia'], ['Sobre a NEXTLAB', '#sobre']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRight size={16} /></a>)}</nav>}
       </header>
