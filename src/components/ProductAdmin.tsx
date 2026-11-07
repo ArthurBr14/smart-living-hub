@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
-import { Plus, Save, Eye, EyeOff } from 'lucide-react'
+import { Plus, Save, Eye, EyeOff, Upload } from 'lucide-react'
+import { sanitizeImage } from '@/lib/image-upload'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -45,7 +46,7 @@ export function ProductAdmin() {
     const p = Number(form.price.replace(',', '.')), s = Number(form.presale.replace(',', '.'))
     if (form.name.trim().length < 2) return setMessage('Informe o nome do produto.')
     const err = validatePrices(p, s); if (err) return setMessage(err)
-    if (form.image && !/^https?:\/\//.test(form.image.trim())) return setMessage('O link da foto deve começar com https://')
+    if (form.image && !form.image.startsWith('data:image/jpeg;base64,') && !/^https?:\/\//.test(form.image.trim())) return setMessage('O link da foto deve começar com https://')
     const next = String(Math.max(0, ...products.map(x => Number(x.id) || 0)) + 1).padStart(2, '0')
     setBusy(true)
     const { error } = await supabase.from('products').insert({ id: next, name: form.name.trim(), category: form.category.trim().toUpperCase() || 'NOVIDADE', caption: form.caption.trim(), description: form.description.trim(), image_url: form.image.trim(), price: p, presale_price: s, tags: form.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 5), sort_order: Number(next) })
@@ -64,7 +65,17 @@ export function ProductAdmin() {
       <div><Label htmlFor="np-price">Preço normal (R$)</Label><Input id="np-price" inputMode="decimal" value={form.price} onChange={set('price')} /></div>
       <div><Label htmlFor="np-presale">Preço pré-venda (R$)</Label><Input id="np-presale" inputMode="decimal" value={form.presale} onChange={set('presale')} /></div>
       <div><Label htmlFor="np-caption">Frase de destaque</Label><Input id="np-caption" maxLength={120} value={form.caption} onChange={set('caption')} /></div>
-      <div><Label htmlFor="np-image">Link da foto (https://…)</Label><Input id="np-image" maxLength={500} value={form.image} onChange={set('image')} /></div>
+      <div><Label htmlFor="np-image">Link da foto (https://…)</Label><Input id="np-image" maxLength={500} value={form.image.startsWith('data:') ? '' : form.image} placeholder={form.image.startsWith('data:') ? 'Foto enviada do computador' : ''} onChange={set('image')} /></div>
+      <div><Label htmlFor="np-file">Ou envie uma foto</Label><Button type="button" variant="outline" disabled={busy} onClick={() => document.getElementById('np-file')?.click()}><Upload /> Escolher foto</Button>
+        <input id="np-file" type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={async e => {
+          const file = e.target.files?.[0]; e.target.value = ''
+          if (!file) return
+          setBusy(true); setMessage('Verificando a foto…')
+          try { const url = await sanitizeImage(file); setForm(f => ({ ...f, image: url })); setMessage('Foto verificada e aprovada.') }
+          catch (err) { setMessage(err instanceof Error ? err.message : 'Foto recusada.') }
+          setBusy(false)
+        }} />
+        {form.image.startsWith('data:') && <img src={form.image} alt="Prévia da foto" width={64} height={64} style={{ borderRadius: 8, objectFit: 'cover', marginTop: 8 }} />}</div>
       <div className="wide"><Label htmlFor="np-desc">Descrição</Label><textarea id="np-desc" maxLength={500} rows={3} value={form.description} onChange={set('description')} /></div>
       <div className="wide"><Label htmlFor="np-tags">Etiquetas (separadas por vírgula)</Label><Input id="np-tags" maxLength={150} value={form.tags} onChange={set('tags')} /></div>
       {form.price && form.presale && <p className="wide">Na vitrine: <s>{formatBRL(Number(form.price.replace(',', '.')) || 0)}</s> <strong>{formatBRL(Number(form.presale.replace(',', '.')) || 0)}</strong></p>}
