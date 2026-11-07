@@ -7,3 +7,5 @@
 - [x] Verificar gestão autenticada e autorização do proprietário: reserva registrada e lida na área privada como masteranunciosarthur@gmail.com (admin).
 - [x] Botão de login no cabeçalho que reflete a sessão: "Entrar" para visitantes, menu da conta com "Sair" e acesso à gestão para administradores.
 - [ ] Verificar publicação e retorno de login no GitHub: aguarda atualização pelo GitHub Actions e login do proprietário.
+- [x] Reforçar permissões e isolamento de sessões; testar bloqueio sem login, leitura administrativa e saída seguida de Voltar.
+- [x] Concluir análise aprofundada de segurança: sem achados no código; regra pública de arquivos corrigida e rechecagem básica sem achados.

@@ -50,6 +50,13 @@
       "when": 1793849862479,
       "tag": "0006_split_products_read_policy",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794057972972,
+      "tag": "0007_least_privilege_customer_access",
+      "breakpoints": true
     }
   ]
 }
