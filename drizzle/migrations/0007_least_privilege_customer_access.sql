@@ -1,0 +1,11 @@
+REVOKE ALL ON TABLE public.profiles, public.user_roles, public.reservations FROM anon;
+REVOKE ALL ON TABLE public.profiles, public.user_roles, public.reservations, public.products FROM authenticated;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.profiles TO authenticated;
+GRANT SELECT ON TABLE public.user_roles TO authenticated;
+GRANT SELECT, UPDATE ON TABLE public.reservations TO authenticated;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.products TO authenticated;
+REVOKE ALL ON TABLE public.products FROM anon;
+GRANT SELECT ON TABLE public.products TO anon;
+GRANT ALL ON TABLE public.profiles, public.user_roles, public.reservations, public.products TO service_role;
+DROP POLICY IF EXISTS "Public product images read" ON storage.objects;
+CREATE POLICY "Admin product images read" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'product-images' AND public.has_role(auth.uid(), 'admin'::public.app_role));

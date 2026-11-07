@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Application structure
+- Clear account-dependent query data on every identity transition, including cross-tab sign-out; cached customer records must not carry over to another account.
 - Load showcase products and prices from the Cloud products table (public read, admin-only write) with bundled fallback data, and have the reservation RPC read the price from that table; admins edit the catalog without code changes and the site still renders offline/prerendered.
 - Pass only the selected product to the reservation dialog and mount it keyed by product ID; this prevents product switching and isolates each reservation's form state.
 - Submit reservations through the validated Cloud SQL RPC and read management data through browser Cloud clients with admin-only RLS; this preserves GitHub Pages compatibility without exposing customer data.

@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from '@/integrations/supabase/client';
+import { clearPreviousAccount } from '@/lib/session-privacy';
 
 function NotFoundComponent() {
   return (
@@ -119,8 +120,13 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(event => {
+    let previousId: string | null = null;
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      const nextId = session?.user.id ?? null;
+      if (event === 'INITIAL_SESSION') { previousId = nextId; return; }
       if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED'].includes(event)) return;
+      clearPreviousAccount(queryClient, previousId, nextId);
+      previousId = nextId;
       router.invalidate();
       if (event !== 'SIGNED_OUT') queryClient.invalidateQueries();
     });
